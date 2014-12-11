@@ -1,0 +1,24 @@
+The \SwissRangerPacketHandler{} class contains the information about how the Swiss\-Ranger data is encoded 
+in incoming network packets. It is a subtype of \SafePacketHandler{}, and it is instantiated by the Swiss\-Ranger 
+receiver in order to manage the Swiss\-Ranger image data transferred over the network.
+
+Similar to the \ColorPacketHandler{}, this class uses a \PacketOrganizer{} in its implementation to sort and 
+organize the large number of incoming packets (see Section \ref{packetorganizer}). The packet organizer puts 
+together the received images' pieces and informs the SwissRanger packet handler once they are ready to be 
+retrieved. Table \ref{swissrangerpackethandlermethods} lists the method that the SwissRanger packet handler 
+overrides from the \SafePacketHandler{} class. 
+
+\begin{table}[ht]
+\caption{Public methods in the \SwissRangerPacketHandler{}}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\SwissRangerPacketHandler{}} \\
+	\multicolumn{1}{| c |}{{\small extends \SafePacketHandler{}}} \\
+	\hline \hline
+	\texttt{safeHandle} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{swissrangerpackethandlermethods}
+\end{table}

@@ -1,0 +1,24 @@
+The \SwissRangerJavaAcquire{} class establishes the Java interface to the SwissRanger driver. It uses the 
+Java Native Interface (JNI) framework to access the native functions in the driver's library. The \RD{} Java layer 
+declares native methods that are implemented in a C layer packaged in the \RD{} JNI library called 
+libsrJavaAcquire. 
+
+The \SwissRangerJavaAcquire{} class simplifies the access to a SwissRanger camera by declaring the 
+method listed in Table \ref{swissrangerjavaacquiremethods}. Unlike \DCJavaAcquire{}, this class does not
+declare \texttt{start\-Cap\-tur\-ing} nor \texttt{stop\-Cap\-tur\-ing} methods. The driver's library does not contain
+functions equivalent to these operations since the camera is capturing from the moment it is created.
+The \texttt{getImages} method is used to retrieve the images for all data types at the same time.  
+
+\begin{table}[ht]
+\caption{Public methods in the \SwissRangerJavaAcquire{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\SwissRangerJavaAcquire{}} \\
+	\hline \hline
+	\texttt{getImages} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{swissrangerjavaacquiremethods}
+\end{table}

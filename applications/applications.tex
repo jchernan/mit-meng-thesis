@@ -1,0 +1,28 @@
+\chapter{Face and Body Pose Tracking} \label{applications}
+
+Chapter \ref{system} presented an integrated vision system for \RD{}, and Chapter \ref{depthcolor} showed 
+that it is possible to build new camera representations on top of it. Along with capturing and handling images, 
+a vision system should be able to retrieve information from them. This chapter integrates two algorithms in the 
+field of object detection and tracking that let the system gather information about humans in the 
+camera's surroundings. 
+
+Section \ref{facetracker} presents a face tracking algorithm that operates on the depth-color images introduced 
+in Chapter \ref{depthcolor}. This algorithm uses the depth information to segment the person of interest from 
+the background and consequently reduce the number of false positives detected by a traditional face detector.
+The algorithm is shown to be robust to different face positions and orientations. 
+
+Section \ref{bodyposetracker} introduces a representation for the Microsoft's Kinect camera and integrates an
+open source framework that uses the Kinect's images to detect and track a person's body pose. The algorithm 
+implemented in this framework operates on the depth images captured by the Kinect and outputs a body 
+skeleton indicating the position and orientation of various joints in the human body. 
+
+In this chapter, the Kinect becomes the second depth-color camera that forms part of the integrated vision 
+system. In conjunction with the two tracking algorithms, this serves to point out the new importance of these 
+sensors in the field of computer vision. 
+
+
+\section{Face Tracker} \label{facetracker}
+\input{applications/facetracker}
+
+\section{Body Pose Tracker} \label{bodyposetracker}
+\input{applications/bodyposetracker}

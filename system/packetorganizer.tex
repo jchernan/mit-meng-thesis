@@ -1,0 +1,38 @@
+When sending packets through the network, packets might arrive at the receiver end out of order, or they 
+might get dropped and not be received at all. Furthermore, the sender might divide the packets into smaller 
+parts, and send those to the receiver in the form of subpackets. The receiver must sort the subpackets and 
+know when the whole packet has been received. The receiver should also decide when to stop waiting for a 
+dropped subpacket.
+
+The \PacketOrganizer{} class provides a mechanism to handle these situations. When creating a packet 
+organizer, the user decides how many buffers will be collecting subpackets at the same time, each buffer
+being assigned to a different packet. A received subpacket must contain header information about its position 
+in the subpacket stream, its length, the timestamp of the packet to which it belongs, and the total number of 
+subpackets that form this packet.
+
+\begin{table}[ht]
+\caption{Public methods in the \PacketOrganizer{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\PacketOrganizer{}} \\
+	\hline \hline
+	\texttt{put} \\
+	\texttt{getRecord} \\
+	\texttt{getBuffer} \\
+	\texttt{ready} \\
+	\texttt{releaseBuffer} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{packetorganizermethods}
+\end{table}
+
+Table \ref{packetorganizermethods} lists the methods available in the \PacketOrganizer{} class. The 
+\texttt{put} method is used to insert a received subpacket into its corresponding packet buffer. The 
+\texttt{read\-y} method indicates if a packet buffer has received all the expected subpackets. Once a packet
+buffer is ready, the methods \texttt{get\-Re\-cord} and \texttt{get\-Buff\-er} are used to retrieve the data from
+that buffer. The user should copy the data out of the buffer because buffers are reused during the lifetime of 
+the packet organizer. Once the data has been retrieved, the method \texttt{re\-lease\-Buff\-er} tells the 
+packet organized that the buffer can be used to collect subpackets from another incoming packet.
+

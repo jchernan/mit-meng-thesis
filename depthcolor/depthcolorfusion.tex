@@ -1,0 +1,59 @@
+The \DepthColorFusion{} class implements the steps of the depth-color fusion algorithm described in Section 
+\ref{pointcorrespondences}. The constructor of this class takes as input the cameras' parameters 
+computed with the \DepthColorCalibrationTool{} object. From these parameters it can calculate the relative 
+transformation between the depth and color cameras using equations \eqref{relativerotation} and 
+\eqref{relativetranslation}. Then, method \texttt{fuse\-Points}, listed in Table \ref{depthcolorfusionmethods},
+can be used to get the point correspondences between the depth and color images.
+
+\begin{table}[ht]
+\caption{Public methods in the \DepthColorFusion{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\DepthColorFusion{}} \\
+	\hline \hline
+	\texttt{fusePoints} \\
+	\texttt{getDepthCameraParameters} \\
+	\texttt{getColorCameraParameters} \\
+	\texttt{getDepthToColorMap} \\
+	\texttt{getColorToDepthMap} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{depthcolorfusionmethods}
+\end{table}
+
+Table \ref{fusepointsalgorithm} describes the algorithm for the \texttt{fuse\-Points} method. The method takes 
+as input the depth image, the color image, and the image buffer where it will store the fused color information. 
+For each pixel in the depth image it finds the correspondent pixel in the color image. Then, the algorithm 
+retrieves the color value from the pixel in the color image and stores it in the pixel of the fused color buffer with 
+position equal to the position of the depth image pixel. This fusion operation can be performed in real time with
+live image streams.
+
+\begin{table}[ht]
+\caption{Algorithm for the \texttt{fusePoints} method in \DepthColorFusion{}}
+\begin{center}
+\begin{tabular}{ l l }
+\hline
+\multicolumn{2}{l}{\texttt{FUSE\_POINTS (depthImage, colorImage, fusedImage):}} \\
+1 & \texttt{{\bf For} each pixel $(x_d, y_d)$ of depthImage:} \\
+2 & \hspace{0.6cm} \texttt{Compute the world point $q_d$ using the depth value} \\
+- & \hspace{1.2cm} \texttt{and equations \eqref{X} and \eqref{Y};} \\
+3 & \hspace{0.6cm} \texttt{Compute homogeneous image point $p_c$ using equation \eqref{pc3};} \\
+4 & \hspace{0.6cm} \texttt{Compute color image coordinate $(x_c, y_c)$ using equation \eqref{xcyc};} \\
+5 & \hspace{0.6cm} \texttt{Retrieve color value from pixel $(x_c, y_c)$ of colorImage;} \\
+6 & \hspace{0.6cm} \texttt{Place retrieved color value in pixel $(x_d, y_d)$ of fusedImage;} \\
+\hline
+\end{tabular}
+\end{center}
+\label{fusepointsalgorithm}
+\end{table}
+
+The final output of the depth-color fusion algorithm is a fused image that is composed of the original depth 
+image and the fused color image. There is a one-to-one correspondence between the pixels of these images
+with same $x$ and $y$ position. Furthermore, the \DepthColorFusion{} object stores the point correspondence
+information in the form of two hash maps, one that maps points in the depth image to points in the original color
+image, and another one that maps points in the original color image to points in the depth image. These hash
+maps can be accessed through the \texttt{get\-Depth\-To\-Col\-or\-Map} and 
+\texttt{get\-Col\-or\-To\-Depth\-Map} methods, respectively.
+

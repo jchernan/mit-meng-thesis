@@ -1,0 +1,79 @@
+The \SwissRangerReceiver{} class extends \CameraReceiver{} to provide the mechanism that interfaces with a 
+SwissRanger camera. It allows the user to acquire images directly from a SwissRanger or to receive depth, 
+amplitude, x-coordinate, y-coordinate, and confidence images via a network transfer. Image acquisition from 
+the camera is achieved using the SwissRanger driver API that is provided by Mesa Imaging. The network 
+transfer is achieved through IRCP. Table \ref{swissrangerreceivermethods} lists the methods of the 
+SwissRanger receiver class.
+
+\begin{table}[ht]
+\caption{Public methods in the \SwissRangerReceiver{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\SwissRangerReceiver{}} \\
+	\multicolumn{1}{| c |}{{\small \texttt{extends} \CameraReceiver{}}} \\
+	\hline \hline
+	\texttt{getDepth} \\
+	\texttt{getAmplitude} \\
+	\texttt{getX} \\
+	\texttt{getY} \\
+	\texttt{getConfidenceMap} \\
+	\texttt{handleDataRecord} \\
+	\texttt{update} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{swissrangerreceivermethods}
+\end{table}
+
+Similar to the color receiver, the SwissRanger receiver first tries to connect to a Swiss\-Ranger camera. The 
+\texttt{up\-date} method, called on each system loop, grabs the images from the camera using the 
+\SwissRangerJavaAcquire{} methods. If the receiver fails to connect to a camera it proceeds to start the IRCP 
+network connection by setting up a \SwissRangerPacketHandler{} (again, the user has the option of forcing a 
+network connection). The images received by the packet handler are sent to the SwissRanger receiver, which 
+calls the \texttt{han\-dle\-Da\-ta\-Re\-cord} method to handle the incoming data record objects.
+
+The \SwissRangerReceiver{} class is flexible with the type of image it can handle and it provides a set of 
+public static variables that the user can modify. However, in practice these variables are not changed 
+because the SwissRanger sensor itself does not provide this flexibility. Table \ref{swissrangerreceivervariables} 
+contains the list of all the variables available to the user. As this table shows, the user has the option of 
+thresholding the depth image. This thresholding is performed based on depth, amplitude, and confidence map
+values. 
+
+\begin{table}[ht]
+\caption{User-modifiable static variables in the \SwissRangerReceiver{} class}
+\begin{center}
+\begin{tabular}{| l | l |}
+	\multicolumn{2}{c}{\SwissRangerReceiver{}} \\
+	\hline
+	Variable & Description \\
+	\hline \hline
+	\texttt{WIDTH} 								& The image width \\
+	\texttt{HEIGHT} 							& The image height \\
+	\texttt{DEPTH} 								& The image pixel depth \\
+	\texttt{NUMBER\_OF\_CHANNELS} 				& The image number of channels \\
+	\texttt{MODULATION\_FREQUENCY} 			& The modulation frequency of the camera \\
+	\texttt{INITIAL\_DEPTH\_HIGH\_THRESHOLD} 	& The initial depth high threshold \\
+	\texttt{INITIAL\_DEPTH\_LOW\_THRESHOLD} 	& The initial depth low threshold \\
+	\texttt{INITIAL\_AMPLITUDE\_THRESHOLD} 		& The initial amplitude threshold \\
+	\texttt{INITIAL\_CONFIDENCE\_THRESHOLD} 	& The initial confidence threshold \\
+	\texttt{MAX\_AMPLITUDE\_THRESHOLD} 		& The maximum threshold for the amplitude \\
+	\texttt{MAX\_CONFIDENCE\_THRESHOLD} 		& The maximum threshold for the confidence \\
+	\texttt{UNDISTORT} 						& Flag to undistort the image \\
+	\texttt{THRESHOLD} 						& Flag to threshold the depth image \\
+	\texttt{STREAM\_CAPACITY} 					& The receiver image stream size \\
+	\texttt{VISION\_MINOR\_TYPE} 				& The IRCP minor type \\
+	\texttt{PACKET\_HANDLER\_NAME} 			& The packet handler name \\
+	\texttt{PACKET\_HANDLER\_KEY} 				& The packet handler key \\
+	\hline
+\end{tabular}
+\end{center}
+\label{swissrangerreceivervariables}
+\end{table}
+
+The Swiss\-Ranger receiver handles the different image streams using the First-In-First-Out queue mechanism 
+used by the color receiver: fresh images are stored at the tail of the stream while old images are retrieved 
+from the head of the stream. This allows the receiver to store a user-defined number of last seen images in 
+memory and to synchronize two or more cameras by locating in their streams the images with matching (or 
+closest) timestamp. Like in the \ColorReceiver{} class, the implementation of this mechanism is provided by an 
+\ImageStream{} object (see Section \ref{imagestream}).

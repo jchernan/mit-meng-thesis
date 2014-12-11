@@ -1,0 +1,24 @@
+\digraph[scale=0.75]{ColorCam}{
+	graph [rankdir = "TB" margin = 0];
+	node [shape = "box" style = "filled" fillcolor = "gainsboro" fontsize = "12" fontname = "Courier"];
+		Camera CameraReceiver CameraData Stream;
+	node [shape = "box" style = "filled" fillcolor = "floralwhite" fontsize = "12" fontname = "Courier"];
+	{ rank = "source"; CameraReceiver Camera CameraData Stream;}
+	{ rank = "same"; ColorCam ColorCamData;}
+	{ rank = "same"; ColorReceiver CalibrationTool;}
+	{ rank = "same"; ColorPacketHandler DC1394JavaAcquire ImageStream;}
+	{ rank = "sink"; PacketOrganizer;}
+	edge [arrowhead = "normal"];
+	Camera -> CameraData;
+	ColorCam -> Camera [arrowhead = "empty"] ;
+	ColorCam -> ColorCamData;
+	ColorCam -> ColorReceiver ;
+	ColorCam -> CalibrationTool;
+	ColorCamData -> CameraData [arrowhead = "empty"];
+	ColorReceiver -> CameraReceiver [arrowhead = "empty"];
+	ColorReceiver -> ColorPacketHandler;
+	ColorReceiver -> DC1394JavaAcquire;
+	ColorReceiver -> ImageStream;
+	ImageStream -> Stream [arrowhead = "empty"];
+	ColorPacketHandler -> PacketOrganizer;
+}

@@ -1,0 +1,23 @@
+\digraph[scale=0.72]{DepthColorCam}{
+	graph [rankdir = "TB" margin = 0];
+	node [shape = "box" style = "filled" fillcolor = "gainsboro" fontsize = "12" fontname = "Courier"];
+		Camera CameraData;
+	node [shape = "box" style = "filled" fillcolor = "floralwhite" fontsize = "12" fontname = "Courier"];
+	{ rank = "source"; Camera CameraData;}
+	{ rank = "same"; DepthColorCam DepthColorCamData;}
+	{ rank = "same"; ColorCam SwissRangerCam;}
+	{ rank = "same"; DepthColorCalibrationTool DepthColorFusion;}
+	{ rank = "sink"; CalibrationTool ;}
+	edge [arrowhead = "normal"];
+	Camera -> CameraData;
+	DepthColorCam -> Camera [arrowhead = "empty"] ;
+	DepthColorCam -> DepthColorCamData;
+	DepthColorCam -> DepthColorCalibrationTool;
+	DepthColorCam -> DepthColorFusion;
+	DepthColorCam -> ColorCam;
+	DepthColorCam -> SwissRangerCam;
+	DepthColorCamData -> CameraData [arrowhead = "empty"];
+	DepthColorCalibrationTool -> CalibrationTool;
+	ColorCam -> CalibrationTool;
+	SwissRangerCam -> CalibrationTool;
+}

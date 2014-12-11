@@ -1,0 +1,57 @@
+The \Stream{} abstract class represents a stream of buffer objects. A buffer object can be any mutable object 
+used to store data. Since the \Stream{} class is defined using a generic type declaration, it allows the user
+decide what will the buffer object be in an specific stream implementation. 
+
+When deciding on a buffer object, the user has to make sure it can be created and manipulated using the 
+abstract methods listed in Table \ref{streamprotectedmethods}. These methods should be implemented by 
+the user in the \Stream{}'s subclasses, where \texttt{T} is substituted by the type of the buffer object. The 
+\texttt{buff\-er} argument in the \texttt{write\-Buff\-er} and \texttt{read\-Buff\-er} methods represents the buffer
+where data is going to be written or from where data is going to be read, respectively. Conversely, the 
+\texttt{da\-ta} argument represents the data that will be written into the buffer or where the data read from the 
+buffer will be copied into, respectively.
+
+\begin{table}[ht]
+\caption{Abstract methods that define the buffer object in the \Stream{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\Stream{}} \\
+	\hline \hline
+	\texttt{T createBuffer()} \\
+	\texttt{writeBuffer(T buffer, T data)} \\
+	\texttt{readBuffer(T buffer, T data)} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{streamprotectedmethods}
+\end{table}
+
+The \Stream{} object is created with a finite capacity that remains constant during the lifetime of the object. 
+Therefore, it creates a finite amount of buffer objects that are instantiated only once and always reused 
+afterwards. The \Stream{} class' design allows to operate similar to a First-In-First-Out queue, with the 
+incoming data being added at the tail of the stream and the old data being polled from the head of the stream. 
+Furthermore, the data is available to be retrieved only when all the buffers in the stream have been filled, 
+ensuring in that way that all buffers contain meaningful continuous data that the user can use at any given 
+time.
+
+The \Stream{} class contains the implementation of the public methods listed in Table \ref{streammethods}. 
+It also provides some non-public helper methods that are used by the subclasses to add, poll, and peek the 
+stream. The user must declare in the subclasses the formal methods to access the data from the stream 
+according to the required design. 
+
+\begin{table}[ht]
+\caption{Public methods in the \Stream{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\Stream{}} \\
+	\hline \hline
+	\texttt{isDataAvailable} \\
+	\texttt{capacity} \\
+	\texttt{get} \\
+	\texttt{clear} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{streammethods}
+\end{table}

@@ -1,0 +1,30 @@
+The \CameraReceiver{} abstract class defines the base structure of the mechanism that will acquire and handle
+data from the camera sensors. It implements two \RD{} interfaces. The first one is the \iUpdateable{} interface,
+which describes classes that have an \texttt{up\-date} method. The main loop of an \RD{} application calls 
+\texttt{up\-date} on all the objects that have been registered as updatable. For the camera receiver this means 
+that the \texttt{up\-date} method can be used to grab an image from a camera on every loop.
+
+The second interface used by the \CameraReceiver{} class is the \iDataRecordHandler{}. This interface is part
+of \RD{}'s intra-application communication system. It is used to define a class that can handle \iDataRecord{} 
+objects being sent from another application. A class that implements this interface has a 
+\texttt{han\-dle\-Da\-ta\-Re\-cord} method that handles the incoming data record objects. The camera receiver
+can use this method to receive records containing image data.
+
+Table \ref{camerareceivermethods} lists the two abstract methods declared in the \CameraReceiver{} class.
+These methods are used to start the image receiving process and query the receiver if it has image data 
+available to be accessed or retrieved. 
+
+\begin{table}[ht]
+\caption{Public methods in the \CameraReceiver{} class }
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\CameraReceiver{}} \\
+	\hline \hline
+	\texttt{startReceiving} \\
+	\texttt{isDataAvailable} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{camerareceivermethods}
+\end{table}

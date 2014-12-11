@@ -1,0 +1,34 @@
+digraph module_dependecy {
+
+	graph [rankdir = "LR"];
+	node [shape = "box" style = "filled" fillcolor = "gainsboro" fontsize = "12" fontname = "Courier"];
+		Camera CameraData Stream;
+	node [shape = "box" style = "filled" fillcolor = "floralwhite" fontsize = "12" fontname = "Courier"];
+	{ rank = "source"; Camera CameraData;}
+	{ rank = "same"; ColorCam ColorCamData SwissRangerCam SwissRangerCamData;}
+	{ rank = "same"; ColorReceiver SwissRangerReceiver CalibrationTool;}
+	{ rank = "same"; ColorPacketHandler SwissRangerPacketHandler;}
+	{ rank = "same"; DC1394JavaAcquire SwissRangerJavaAcquire;}
+	{ rank = "sink"; ImageStream Stream PacketOrganizer;}
+	edge [arrowhead = "normal"];
+	Camera -> CameraData;
+	ColorCam -> Camera [arrowhead = "empty"] ;
+	ColorCam -> ColorCamData;
+	ColorCam -> ColorReceiver ;
+	ColorCam -> CalibrationTool;
+	ColorCamData -> CameraData [arrowhead = "empty"];
+	ColorReceiver -> ColorPacketHandler;
+	ColorReceiver -> DC1394JavaAcquire;
+	ColorReceiver -> ImageStream;
+	ImageStream -> Stream [arrowhead = "empty"];
+	ColorPacketHandler -> PacketOrganizer;
+	SwissRangerCam -> Camera [arrowhead = "empty"] ;
+	SwissRangerCam -> SwissRangerCamData;
+	SwissRangerCam -> SwissRangerReceiver ;
+	SwissRangerCam -> CalibrationTool;
+	SwissRangerCamData -> CameraData [arrowhead = "empty"];
+	SwissRangerReceiver -> SwissRangerPacketHandler;
+	SwissRangerReceiver -> SwissRangerJavaAcquire;
+	SwissRangerReceiver -> ImageStream;
+	SwissRangerPacketHandler -> PacketOrganizer;
+}

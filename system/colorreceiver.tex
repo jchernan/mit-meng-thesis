@@ -1,0 +1,73 @@
+The \ColorReceiver{} class extends \CameraReceiver{} to provide the mechanism that interfaces with a color 
+camera. It allows the user to acquire images directly from a Firewire camera or to receive the color images via a 
+network transfer. Image acquisition from the camera is achieved using the libdc1394 API, a library of functions to 
+control Firewire cameras that conform to the 1394-based Digital Camera Specifications \cite{libdc1394}. The 
+network transfer is achieved through IRCP, the network communication protocol used by \RD{} \cite{IRCP}.
+Table \ref{colorreceivermethods} lists the methods that the \ColorReceiver{} class adds to the camera receiver 
+representation.
+
+\begin{table}[ht]
+\caption{Public methods in the \ColorReceiver{} class }
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\ColorReceiver{}} \\
+	\multicolumn{1}{| c |}{{\small \texttt{extends} \CameraReceiver{}}} \\
+	\hline \hline
+	\texttt{getImage} \\
+	\texttt{handleDataRecord} \\
+	\texttt{update} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{colorreceivermethods}
+\end{table}
+
+Upon initialization, the color receiver first tries to connect to a Firewire camera. The \texttt{up\-date} method
+is in charge of acquiring the images using the \DCJavaAcquire{} methods. If the color receiver does not find a 
+camera or if it fails when attempting to connect to one, it will proceed to start the IRCP network connection by 
+setting up a \ColorPacketHandler{} (the user has the option of forcing this network connection). As discussed in 
+Section \ref{camerareceiver}, the images received by the packet handler are sent to the color receiver through 
+the \iDataRecordHandler{} interface. The color receiver calls the \texttt{han\-dle\-Da\-ta\-Re\-cord} method to 
+handle the incoming data record objects.
+
+The \ColorReceiver{} class is flexible with the type of image it can handle. The image type is specified by a 
+set of public static variables that the user can modify. Table \ref{colorreceivervariables} contains the list of all 
+the variables available to the user. When running on libdc1394 mode the user can change the size of the image 
+captured from the camera. When running on network mode the user can modify the image size, pixel depth, and 
+color model according to what is being transferred over the network. 
+
+\begin{table}[ht]
+\caption{User-modifiable static variables in the \ColorReceiver{} class}
+\begin{center}
+\begin{tabular}{| l | l |}
+	\multicolumn{2}{c}{\ColorReceiver{}} \\
+	\hline
+	Variable & Description \\
+	\hline \hline
+	\texttt{WIDTH} 						& The image width \\
+	\texttt{HEIGHT} 					& The image height \\
+	\texttt{DEPTH} 						& The image pixel depth \\
+	\texttt{COLOR\_MODEL} 				& The image color model \\
+	\texttt{CAMERA\_GUID} 				& The camera GUID \\
+	\texttt{DC1394\_FRAME\_RATE} 		& The camera capturing frame rate \\
+	\texttt{DC1394\_ISO\_SPEED} 			& The camera ISO speed \\
+	\texttt{UNDISTORT} 				& Flag to undistort the image \\
+	\texttt{COMPRESSED\_IMAGE} 		& Flag if image is compressed \\
+	\texttt{STREAM\_CAPACITY} 			& The receiver image stream size \\
+	\texttt{VISION\_MINOR\_TYPE} 		& The IRCP minor type \\
+	\texttt{PACKET\_HANDLER\_NAME} 	& The packet handler name \\
+	\texttt{PACKET\_HANDLER\_KEY} 				& The packet handler key \\
+	\hline
+\end{tabular}
+\end{center}
+\label{colorreceivervariables}
+\end{table}
+
+Besides handling a real time image stream, the color receiver can store a user-defined number of last seen 
+images in memory. The mechanism that processes the image stream works like a First-In-First-Out queue: 
+fresh images are stored at the tail of the stream while old images are retrieved from the head of the stream. 
+The size of the stream determines the number of images that can be saved in memory. This system allows
+to synchronize two or more cameras by finding in their streams the images with matching (or closest) 
+timestamp. The \ImageStream{} class contains the implementation of this mechanism (see Section 
+\ref{imagestream}).

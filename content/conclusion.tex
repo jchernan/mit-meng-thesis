@@ -1,0 +1,35 @@
+\chapter{Conclusion} \label{conclusion}
+
+This thesis presented an integrated vision system for a robotics research and development platform. The 
+system was described as part of \RD{}, the software platform developed and used by the Personal Robots 
+Group at the MIT Media Lab. Nevertheless, its design can be generalized and implemented in other platforms.
+
+The proposed vision system featured representations for images and camera sensors. These representations
+were shown to be versatile. For example, an \ImageBuffer{} can describe images of any size and with a variety 
+of pixel depths and color models. Moreover, the \Camera{} and \CameraReceiver{} classes can be extended 
+into subclasses that represent any type of camera. This thesis presented the implementations of three different 
+types of cameras: a color camera, a 3D time-of-flight camera (or depth camera), and a Microsoft's Kinect 
+camera.
+
+Then, it was shown that it is possible to build new representations on top of the existing ones. The example 
+discussed in this thesis was the \DepthColorCam{} class. The camera represented by this class merged the
+representations of the depth and color cameras in order to provide images with fused depth-color information. 
+To achieve this, it was necessary to describe an algorithm capable of performing the fusion of the depth and 
+color images in real-time.
+
+At the end, this thesis discussed two applications that use depth-color images to retrieve information from a 
+scene. The first one used the images from the \DepthColorCam{} object to detect and track human faces. The
+second application used the images from the Kinect, another depth-color camera, to detect and track human 
+body pose. The algorithms that performed these operations proved to be robust to different positions and 
+orientations of the face and body.
+
+The system described in this thesis sets the basic requirements for the vision system of any robotics 
+development platform. Color cameras have been the ``eyes'' of robots for many years. Now, depth-color 
+cameras are becoming prime sensors in robotics. Robots like the MDS now have access to enhanced image 
+data that can be used to design new computer vision algorithms with superior performance at retrieving
+information about the robot's surroundings. 
+
+Many joint efforts are involved in promoting the use of depth-color images in different applications. OpenNI is
+led by industry leaders like PrimeSense and Willow Garage. The RGB-D Project \cite{RGBDProject}, a joint 
+research effort between Intel Labs Seattle and the University of Washington, is another example of the 
+potential these sensors have in future computer vision research.

@@ -1,0 +1,29 @@
+The \DCJavaAcquire{} class establishes the Java interface to the libdc1394 library. Since libdc1394 is 
+written in C, this class uses the Java Native Interface (JNI) framework to access the library functions.
+The native methods declared in the Java layer are implemented in a separate C layer, and this
+implementation is packaged in the \RD{} JNI library called libdc1394\-Ja\-va\-Ac\-quire. 
+
+The \DCJavaAcquire{} class simplifies the access to a Firewire camera by declaring the methods listed
+in Table \ref{dcjavaacquiremethods}. The \texttt{get\-GUIDs} method returns a list of GUIDs from the 
+available Firewire cameras, and \texttt{start\-Cap\-tur\-ing}, \texttt{stop\-Cap\-tur\-ing}, and \texttt{get\-Im\-age}
+are used to control and acquire images from them. The last two methods in the list are specific to Firewire 
+cameras produced by Point Grey, and they are used to convert captured grayscale images to color images.
+
+\begin{table}[ht]
+\caption{Public methods in the \DCJavaAcquire{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\DCJavaAcquire{}} \\
+	\hline \hline
+	\texttt{getGUIDs} \\
+	\texttt{startCapturing} \\
+	\texttt{stopCapturing} \\
+	\texttt{getImage} \\
+	\texttt{retrievePointGreyBayerTile} \\
+	\texttt{convertPointGreyMonoToBGR} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{dcjavaacquiremethods}
+\end{table}

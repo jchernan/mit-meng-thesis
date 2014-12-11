@@ -1,0 +1,24 @@
+\digraph[scale=0.75]{SwissRangerCam}{
+	graph [rankdir = "TB" margin = 0];
+	node [shape = "box" style = "filled" fillcolor = "gainsboro" fontsize = "12" fontname = "Courier"];
+		Camera CameraReceiver CameraData Stream;
+	node [shape = "box" style = "filled" fillcolor = "floralwhite" fontsize = "12" fontname = "Courier"];
+	{ rank = "source"; CameraReceiver Camera CameraData Stream;}
+	{ rank = "same"; SwissRangerCam SwissRangerCamData;}
+	{ rank = "same"; SwissRangerReceiver CalibrationTool;}
+	{ rank = "same"; SwissRangerPacketHandler SwissRangerJavaAcquire ImageStream;}
+	{ rank = "sink"; PacketOrganizer;}
+	edge [arrowhead = "normal"];
+	Camera -> CameraData;
+	SwissRangerCam -> Camera [arrowhead = "empty"] ;
+	SwissRangerCam -> SwissRangerCamData;
+	SwissRangerCam -> SwissRangerReceiver ;
+	SwissRangerCam -> CalibrationTool;
+	SwissRangerCamData -> CameraData [arrowhead = "empty"];
+	SwissRangerReceiver -> CameraReceiver [arrowhead = "empty"];
+	SwissRangerReceiver -> SwissRangerPacketHandler;
+	SwissRangerReceiver -> SwissRangerJavaAcquire;
+	SwissRangerReceiver -> ImageStream;
+	ImageStream -> Stream [arrowhead = "empty"];
+	SwissRangerPacketHandler -> PacketOrganizer;
+}

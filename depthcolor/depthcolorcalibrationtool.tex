@@ -1,0 +1,92 @@
+The \DepthColorCalibrationTool{} class implements the steps of the depth-color fusion algorithm that are 
+described in Sections \ref{camerascalibration} and \ref{relativetransformation}. Analogous to the 
+\DepthColorCam{} class, the implementation uses two \CalibrationTool{} objects, one for each of the cameras 
+that is to be calibrated. The idea behind it consists of performing the calibration of both cameras in parallel, 
+accepting an image pair only when the calibration pattern is found in both images.
+
+Table \ref{depthcolorcalibrationtoolmethods} lists the methods of the \DepthColorCalibrationTool{} class. Similar
+to a \CalibrationTool{} object, a depth-color calibration tool has methods to start, reset, and retrieve the status 
+of the calibration process. It also provides methods to load and save the cameras' parameters, and to change
+the default values of some of the parameters in the calibration process. 
+
+\begin{table}[ht]
+\caption{Public methods in the \DepthColorCalibrationTool{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\DepthColorCalibrationTool{}} \\
+	\hline \hline
+	\texttt{start} \\
+	\texttt{reset} \\
+	\texttt{isCalibrating} \\
+	\texttt{calibrate} \\
+	\texttt{setColorCameraParameters} \\
+	\texttt{setDepthCameraParameters} \\
+	\texttt{setChessboardSquareSize} \\
+	\texttt{setChessboardDimensions} \\
+	\texttt{setRequiredSamples} \\
+	\texttt{getColorCameraParameters} \\
+	\texttt{getDepthCameraParameters} \\
+	\texttt{getChessboardNumberOfColumns} \\
+	\texttt{getChessboardNumberOfRows} \\
+	\texttt{getChessboardSquareSize} \\
+	\texttt{getRequiredSamples} \\
+	\texttt{getRelativeRotation} \\
+	\texttt{getRelativeTranslation} \\
+	\texttt{getRelativeTransformation} \\
+	\texttt{loadCameraParameters} \\
+	\texttt{saveCameraParameters} \\ 
+	\hline
+\end{tabular}
+\end{center}
+\label{depthcolorcalibrationtoolmethods}
+\end{table}
+
+The algorithm for the \texttt{cal\-i\-brate} method in the \DepthColorCalibrationTool{} class is also similar to the 
+one seen in Section \ref{calibrationtool}. However, in this case it handles two calibration processes in parallel.
+Throughout the steps of the algorithm described in Table \ref{depthcolorcalibratealgorithm}, the methods
+\texttt{find\-And\-Draw\-Cor\-ners}, \texttt{add\-Cor\-ners\-To\-List}, and \texttt{cal\-i\-brate\-Cam\-er\-a}  
+are called simultaneously on the two calibration tool objects used by the depth-color calibration tool.
+
+\begin{table}[ht]
+\caption{Algorithm for the \texttt{calibrate} method in \DepthColorCalibrationTool{}}
+\begin{center}
+\begin{tabular}{ l l }
+\hline
+\multicolumn{2}{l}{\texttt{CALIBRATE (currentImages, requiredImages):}} \\
+1 & \texttt{{\bf If} (currentImages < requiredImages)} \\
+2 & \hspace{0.6cm} \texttt{\bf Then:} \\
+3 & \hspace{1.2cm} \texttt{Search checkerboard pattern in color image;} \\
+4 & \hspace{1.2cm} \texttt{Search checkerboard pattern in amplitude image;} \\
+5 & \hspace{1.2cm} \texttt{{\bf If} the pattern is found in both images} \\
+6 & \hspace{1.8cm} \texttt{\bf Then:} \\
+7 & \hspace{2.4cm} \texttt{Extract corners from color image and save them;} \\
+8 & \hspace{2.4cm} \texttt{Extract corners from amplitude image and save them;} \\
+9 & \hspace{2.4cm} \texttt{Increment currentImages counter;} \\
+10 & \hspace{0.6cm} \texttt{\bf Else:} \\
+11 & \hspace{1.2cm} \texttt{Run color camera calibration with saved corners;} \\
+12 & \hspace{1.2cm} \texttt{Run depth camera calibration with saved corners;} \\
+13 & \hspace{1.2cm} \texttt{Compute relative transformation with computed parameters;} \\
+\hline
+\end{tabular}
+\end{center}
+\label{depthcolorcalibratealgorithm}
+\end{table}
+
+This synchronized calibration takes advantage of the underlying OpenCV calibration functions. As mentioned in 
+Section \ref{calibrationtool}, the calibration is performed using the functions in the OpenCV open source library. 
+The function \texttt{cv\-Find\-Chess\-board\-Cor\-ners}, for example, locates the corners of a checkerboard 
+(chessboard) pattern in an image \cite{Bradski}. Since it returns the corners ordered in row-major order 
+starting from the upper-left corner, it is easy to know the correspondence between the calibration points 
+in the depth image and the calibration points in the color image. 
+
+As seen in Table \ref{depthcolorcalibratealgorithm}, the success of the calibration loop depends on finding the 
+calibration pattern in both images of the image pair. When the calibration is completed for both
+cameras, the relative transformation is calculated using equations \eqref{relativerotation} and 
+\eqref{relativetranslation}. The parameters of the transformation can be accessed through three different 
+methods. The \texttt{get\-Rel\-a\-tive\-Ro\-ta\-tion} and \texttt{get\-Rel\-a\-tive\-Trans\-la\-tion} methods return 
+the $3 \times 3$ rotation matrix and $3 \times 1$ translation vector, respectively. The 
+\texttt{get\-Rel\-a\-tive\-Trans\-for\-ma\-tion} method returns a $3 \times 4$ matrix in the form of an extrinsic 
+matrix as described by equation \eqref{extrinsicmatrix}. Both the combination of the first two methods and the 
+third method by itself provide all the necessary information to describe the transformation in 3D space between 
+the depth camera and the color camera.

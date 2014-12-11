@@ -1,0 +1,28 @@
+The \ColorPacketHandler{} class is a subtype of \SafePacketHandler{}, a class part of the receiving end in 
+the IRCP communication system. The \ColorReceiver{} object creates a color packet handler to manage the 
+packets sent over the network that correspond to image data from a color camera. Therefore, the color
+packet handler needs to know how the color information is encoded in the incoming packet. 
+
+In order to manage a large number of sent packets, some of which can get lost or arrive out of sequence, 
+the color packet handler implementation uses a \PacketOrganizer{} object to organize the incoming 
+data (see Section \ref{packetorganizer}). The packet organizer takes the received packets, which 
+consist of subparts of the whole image, and informs the color packet handler once there are images ready
+to be retrieved.
+
+Table \ref{colorpackethandlermethods} contains the method that the color packet handler overrides 
+from the safe packet handler class. 
+
+\begin{table}[ht]
+\caption{Public methods in the \ColorPacketHandler{}  class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\ColorPacketHandler{}} \\
+	\multicolumn{1}{| c |}{{\small extends \SafePacketHandler{}}} \\
+	\hline \hline
+	\texttt{safeHandle} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{colorpackethandlermethods}
+\end{table}

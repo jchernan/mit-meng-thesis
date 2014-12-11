@@ -1,0 +1,42 @@
+\chapter{Introduction} \label{introduction}
+
+Robotics is a fast-growing field in academia, industry, and open-source communities, with many universities 
+and corporations joining efforts in order to create frameworks that promote and advance the development of 
+robotic systems. These systems are usually composed of both hardware and software platforms. As the field 
+moves forward, it becomes necessary to describe the components that these platforms should have.
+
+A vision framework is required by any system that needs to acquire, handle, and process images from 
+cameras. In the same way cameras are typical sensors in robots, a vision framework should be a common 
+component in any robotics software platform. Color cameras, for example, are widely available and the primary 
+choice for the ``eyes'' of a robot. Other types of cameras, like depth cameras, are becoming cheaper and more 
+accessible. 
+
+This thesis provides a technical description of the vision system integrated into \RD{}, the Java software
+platform developed and used by the Personal Robots Group at the MIT Media Lab. The \RD{} platform defines 
+a cognitive architecture for interactive agents that allows designing real-time interactions between robots and 
+persons. It features, among other things, flexible real-time integration of multiple perceptual inputs.
+
+With this vision system, \RD{} applications have access to flexible image and camera representations. The 
+image representation abstracts the source of the image, while the camera representations abstract the process 
+of image acquisition. The modularity of these entities allows building applications without worrying about writing
+code to interface with the cameras. This system is introduced in Chapter \ref{system}. 
+
+Furthermore, the vision system lets the user define new representations by possibly combining existing ones.
+Chapter \ref{depthcolor} explores how to fuse the data captured from two different types of 
+cameras by merging their representations. The goal is to combine 2-dimensional information from a color 
+camera with 3-dimensional information from a depth camera in order to produce fused depth-color images.
+
+The motivation for merging these two sensors comes from the camera setup found in the second generation 
+of the MDS robotic platform developed by the Personal Robots Group. The MDS is a humanoid robot that 
+combines mobility, dexterity, and social interaction abilities \cite{MDS}. In its head, the MDS has a color camera
+and a depth camera, both positioned in the forehead one below the other. 
+
+The vision framework also integrates computer vision algorithms that can be used to gain perceptual 
+information from the robot's surroundings. Chapter \ref{applications} presents face and body tracking 
+capabilities that work on top of the image and camera representations. These algorithms serve to exemplify
+the potential of the proposed vision system.
+
+Although the framework is described as part of \RD{}, its design is meant to be modular and non-platform 
+dependent. Most of the direct dependencies with other \RD{}'s components occur to take advantage of the 
+intra-application communication system built into \RD{}. In general, the core concepts in the design of this vision 
+system can be extracted and implemented in other research and development platforms. 

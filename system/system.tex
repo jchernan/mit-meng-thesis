@@ -1,0 +1,66 @@
+\chapter{Integrated Vision System} \label{system}
+
+This chapter presents an integrated vision system for the \RD{} robotics research and development platform.
+The proposed system introduces new representations for images and cameras in the \RD{} environment with 
+designs that prove to be modular and flexible. In this system, not only images can vary in size, pixel depth, 
+and color model, but they can be easily manipulated both within and outside \RD{} through applications with 
+access to the native system memory.
+
+Moreover, this system presents a core structure for a camera that can be replicated into different camera
+types, including, as shown in this chapter, a color camera and a 3D time-of-flight camera. These
+representations are flexible enough to allow a camera be either a device directly connected to the computer 
+running \RD{}, or a device connected remotely that transfers the image data through the network.
+
+Section \ref{imagebuffer} of this chapter discusses the image representation in the integrated vision system, 
+while Sections \ref{camera} and \ref{camerareceiver} discuss the base camera representation. 
+Sections \ref{colorcam} and \ref{swissrangercam} show the flexibility of the system by presenting the 
+implementations for two types of cameras. Finally, the last three sections of the chapter, Sections 
+\ref{calibrationtool}, \ref{imagestream}, and \ref{packetorganizer}, further discuss some of the entities used in
+the cameras' implementations.
+
+\section{Image Buffer} \label{imagebuffer}
+\input{system/imagebuffer}
+
+\section{Camera} \label{camera}
+\input{system/camera}
+
+\section{Camera Receiver} \label{camerareceiver}
+\input{system/camerareceiver}
+	
+\section{Color Camera} \label{colorcam}
+\input{system/colorcam}
+	
+	\subsection{Color Receiver} \label{colorreceiver}
+	\input{system/colorreceiver}
+	\subsection{Color Packet Handler} \label{colorpackethandler}
+	\input{system/colorpackethandler}
+	\subsection{DC1394 Java Acquire} \label{dc1394javaacquire}
+	\input{system/dc1394javaacquire}
+	
+\section{SwissRanger Camera} \label{swissrangercam}
+\input{system/swissrangercam}
+	
+	\subsection{SwissRanger Receiver} \label{swissrangerreceiver}
+	\input{system/swissrangerreceiver}
+	\subsection{SwissRanger Packet Handler} \label{swissrangerpackethandler}
+	\input{system/swissrangerpackethandler}
+	\subsection{SwissRanger Java Acquire} \label{swissrangerjavaacquire}
+	\input{system/swissrangerjavaacquire}
+		
+\section{Calibration Tool} \label{calibrationtool}
+\input{system/calibrationtool}
+	
+\section{Image Stream} \label{imagestream}
+
+	The \ImageStream{} class is used by the \ColorReceiver{} and \SwissRangerReceiver{}  classes to 
+	handle the image streams from the cameras (see Sections \ref{colorreceiver} and 
+	\ref{swissrangerreceiver}). Section \ref{stream} describes the superclass of \ImageStream{}, the 
+	\Stream{} abstract class. Section \ref{imagestream2} describes the \ImageStream{} class itself.
+
+	\subsection{Stream} \label{stream}
+	\input{system/stream}
+	\subsection{Image Stream} \label{imagestream2}
+	\input{system/imagestream}
+	
+\section{Packet Organizer} \label{packetorganizer}
+\input{system/packetorganizer}

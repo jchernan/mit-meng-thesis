@@ -1,0 +1,39 @@
+The \ImageStream{} class extends \Stream{} to represent a stream of images. An \ImageBuffer{} (see Section
+\ref{imagebuffer}) is used as the buffer object to holds image data. Consequently, the constructor of an 
+\ImageStream{} requires as argument the width, height, pixel depth, and color model information that 
+describes the type of image it needs to handle. 
+
+Given the specified capacity for the stream, an \ImageStream{} object will instantiate that number of image 
+buffers, and will only use those during the lifetime of the object. The advantage of this design becomes clear 
+when considering that the \ImageBuffer{} class performs the expensive operation of allocating space in native 
+memory. Instead of reallocating that space multiple times, the buffer is created once and reused afterwards.
+
+An image stream behaves like a First-In-First-Out queue. The images recently acquired by a camera are 
+added at the tail of the stream using the \texttt{add} method listed in Table \ref{imagestreammethods}. When 
+the stream has reached maximum capacity, each call to \texttt{add} polls an old image from the head of the 
+stream before adding the new image at the tail. In this way, at any given time, the stream stores a number of 
+consecutive images equal to the capacity of the stream.
+
+\begin{table}[ht]
+\caption{Public methods in the \ImageStream{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\ImageStream{}} \\
+	\multicolumn{1}{| c |}{{\small \texttt{extends} \Stream{}}} \\
+	\hline \hline
+	\texttt{add} \\
+	\texttt{peekLast} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{imagestreammethods}
+\end{table}
+
+The \ImageStream{} class provides the \texttt{peek\-Last} method to access the most recently added image 
+from the stream. Given that the stream holds a history of past images, the user has realtime access to the 
+image data by using the \texttt{peek\-Last} method. A second version of the \texttt{peek\-Last} method takes
+as input the desired timestamp for the retrieved image, and searches in the stream for the image with 
+matching (or closest) timestamp. This method is used by the \ColorReceiver{} and \SwissRangerReceiver{} 
+classes to get image data given a specified timestamp (see Sections \ref{colorreceiver} and 
+\ref{swissrangerreceiver}). 

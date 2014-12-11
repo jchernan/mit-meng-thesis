@@ -1,0 +1,40 @@
+The \Camera{} abstract class is the base representation of a camera in the \RD{} environment.  As listed in 
+Table \ref{cameramethods}, this class defines methods to access information about a camera 
+(\texttt{get\-Width}, \texttt{get\-Height}, \texttt{get\-Time\-stamp}, \texttt{get\-Frame\-Rate}), methods to capture 
+images from the camera (\texttt{start\-Cap\-turing}, \texttt{grab\-Im\-age}), and methods to perform camera 
+calibration (\texttt{start\-Cal\-i\-bra\-tion}). 
+
+\begin{table}[ht]
+\caption{Public methods in the \Camera{} class}
+\begin{center}
+\begin{tabular}{| l |}
+	\hline 
+	\multicolumn{1}{| c |}{\Camera{}} \\
+	\hline \hline
+	\texttt{startCapturing} \\
+	\texttt{startCalibration} \\
+	\texttt{grabImage}	\\
+	\texttt{getWidth} \\
+	\texttt{getHeight} \\
+	\texttt{getTimestamp} \\
+	\texttt{getFrameRate} \\
+	\hline
+\end{tabular}
+\end{center}
+\label{cameramethods}
+\end{table}
+
+By providing an abstract implementation, the \Camera{} class lets its subclasses describe different types of 
+cameras while specifying a common structure for them.  In this framework, \ColorCam{} and 
+\SwissRangerCam{} are the main examples of extending the \Camera{} class to represent 
+cameras that capture different types of data: the first one represents a conventional color camera while 
+the second one represents a 3D time-of-flight camera (see Sections \ref{colorcam} and \ref{swissrangercam}). 
+This design allows a flexible definition of what a camera is and lets the user choose the representation 
+of the data captured by a specific sensor.
+
+Furthermore, an object of type \Camera{} is a subtype of \DataProvider{}. A data provider is an object that 
+can publish user defined datatypes in \RD{}'s  intra-application communication system, allowing other objects 
+called data handlers to subscribe to and receive the provided data. In the case of a \Camera{} object, 
+the provided data is represented by the abstract class \CameraData{}. Subclasses of \CameraData{}
+define the datatypes captured by different camera sensors. For example, \ColorCamData{} and 
+\SwissRangerCamData{} represent the data provided by \ColorCam{} and \SwissRangerCam{}, respectively.

@@ -1,0 +1,61 @@
+The \ImageBuffer{} class represents an image in the \RD{} environment. An instance of this class is defined 
+by four fields. The first three are the image's width, height, and pixel depth. The fourth field can be either
+the image's color model or its number of channels.\footnote{Not all images require a color model. An 
+example is the depth image acquired by a range sensor.} 
+The different possible combinations of values for these fields allow a flexible description of an image inside
+the programming environment. Tables \ref{imagebufferdepth} and \ref{imagebuffercolormodel} show the 
+available values for the depth and color model fields, as described by the \ImageBufferDepth{} and 
+\ImageBufferColorModel{} enum types.
+
+\begin{table}[ht]
+\caption{Pixel depth values in the \ImageBufferDepth{} enum}
+\begin{center}
+\begin{tabular}{| l | l |}
+	\multicolumn{2}{c}{\ImageBufferDepth{}} \\
+	\hline 
+	Depth 			& Description \\
+	\hline \hline
+	\texttt{BYTE} 		& Unsigned 8-bit integer \\
+	\texttt{SHORT}	 	& Unsigned 16-bit integer \\
+	\texttt{FLOAT}	 	& 32-bit floating-point single precision \\
+	\texttt{DOUBLE} 	& 64-bit floating-point double-precision \\
+	\hline
+\end{tabular}
+\end{center}
+\label{imagebufferdepth}
+\end{table}
+
+\begin{table}[ht]
+\caption{Color model values in the \ImageBufferColorModel{} enum}
+\begin{center}
+\begin{tabular}{| l | l |}
+	\multicolumn{2}{c}{\ImageBufferColorModel{}} \\
+	\hline 
+	Color Model 		& Description \\
+	\hline \hline
+	\texttt{BGR} 		& Blue-Green-Red channels \\
+	\texttt{BGRA} 		& Blue-Green-Red-Alpha channels \\
+	\texttt{RGB}	 	& Red-Green-Blue channels \\
+	\texttt{RGBA}	 	& Red-Green-Blue-Alpha channels \\
+	\texttt{GRAY}	 	& Grayscale channel \\
+	\hline
+\end{tabular}
+\end{center}
+\label{imagebuffercolormodel}
+\end{table}
+
+In an image buffer, the image data is stored in an underlying \ByteBuffer{} object. 
+Part of the flexibility of the \ImageBuffer{} class is attributed to the versatility of a byte buffer with
+respect to the data it can hold. Furthermore, the byte buffer within an image buffer is created to be 
+direct. A direct byte buffer in Java allocates its space in native system memory, outside of the Java 
+virtual machine's memory heap. This allows other programs outside Java to use native code to access
+the same allocated memory space. An example of the advantage of using direct buffers is the 
+implementation of an interface between \RD{} and the OpenCV computer vision open source library.
+This interface enables performing OpenCV functions directly onto the Java images through native code.
+
+Pixels in an image buffer are stored row by row with interleaved channels, starting at the top-left pixel. 
+The methods to access and manipulate the image data are specific to the image's pixel depth. For 
+example, the methods of the form \texttt{get\-Byte\-Pix\-el} are used to access pixels in an image of depth 
+\texttt{BYTE}. The different versions of the same getter method trade off convenience for performance. 
+Getter methods that accept an array as input speed up a loop through the image's pixels by
+avoiding the overhead of creating the output array on every call.
